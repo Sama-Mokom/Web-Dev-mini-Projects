@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Todo List</title>
+    <link rel="stylesheet" href="navbar.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-right">
+            <div class="user-profile">
+                <img src="images/background.jpg" alt="User Avatar" class="avatar">
+                <div class="dropdown">
+                    <button class="username">User Name</button>
+                    <div class="dropdown-content">
+                        <ol>
+                            <li><a href="#">My To-Dos</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav> 
+    <div class="container">
+        <div class="todo-app">
+           <h2>To-Do List <img src="images/checked.png"></h2>
+           <div class="row">
+            <input type="text" id = "input-box" placeholder="Add your task">
+           </div>
+           <button onclick= addTask() >+</button>
+           <div class="list">
+             <ul id = "list-container" onclick = setTask()>
+        <!-- <li class="checked"></li> -->
+             </ul>
+           </div> 
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
