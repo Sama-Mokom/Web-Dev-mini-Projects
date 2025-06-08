@@ -123,6 +123,9 @@ input{
     background: transparent;
     padding: 14px;
 }
+input.search-bar{
+    display: none;
+}
 
 button{
     border: none;
