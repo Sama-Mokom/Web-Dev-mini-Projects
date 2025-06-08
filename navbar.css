@@ -136,7 +136,7 @@ button{
 }
 
 ul li{
-    list-style: none;
+    list-style: decimal;
     font-size: 17px;
     padding: 12px 8px 12px 50px;
     user-select: none;
@@ -154,7 +154,7 @@ ul li{
     width: 100%;
 }
 
-ul li::before{
+ul#list-container li::before{
     content: "";
     position: absolute;
     height: 28px;
@@ -172,9 +172,10 @@ ul li.checked{
     text-decoration: line-through;
 }
 
-ul li.checked ::before{
-   background-image:url("images/checked3.png"); 
+ul#list-container li.checked::before{
+    background-image: url("images/checked3.png");
 }
+
 
 ul li span{
     display: none;
