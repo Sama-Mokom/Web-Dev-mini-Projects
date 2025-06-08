@@ -134,6 +134,9 @@ button{
     cursor: pointer;
     border-radius: 40px;
 }
+button.full{
+    display: none;
+}
 
 ul li{
     list-style: decimal;

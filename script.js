@@ -2,9 +2,6 @@ const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 
 
-
-
-
 function addTask(){
      if(inputBox.value === ''){
         alert("You must enter a task before adding");
@@ -20,6 +17,11 @@ function addTask(){
      inputBox.value = '';
      saveData();
 }
+inputBox.addEventListener("keydown", function(event){
+    if (event.key === "Enter"){
+        addTask();
+    }
+});
 listContainer.addEventListener('click', function(e){
     if(e.target.tagName.toLowerCase() == "li" && e.target.tagName.toLowerCase() != "span"){
         e.target.classList.toggle("checked");
