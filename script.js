@@ -2,58 +2,123 @@ const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 const addButton = document.getElementById("add-button");
 let count = listContainer.childElementCount;
+let tasks = [];
 
-function addTask(){
-     if(inputBox.value === ''){
-        alert("You must enter a task before adding");
-     }
-     else{
+function generateUniqueID(){
+    return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1;
+}
+function renderTasks(){
+    listContainer.innerHTML = '';
+
+    if (tasks.length > 0){
+        addButton.classList.add("full");
+        inputBox.classList.remove("search-bar")
+    } 
+    else{
+        addButton.classList.remove("full");
+        inputBox.classList.add("search-bar")
+    }
+    tasks.forEach(task => {
         let li = document.createElement("li");
-        li.innerHTML = inputBox.value;
-        listContainer.appendChild(li);
-        console.log(listContainer.childElementCount);
-        if(listContainer.childElementCount !=0 ){
-             addButton.classList.add("full");
+        li.innerHTML = task.itemText;
+        li.dataset.id = task.id;
+
+        if (task.isComplete){
+            li.classList.add("checked");
         }
         let span = document.createElement("span");
         span.innerHTML = "\u00d7";
         li.appendChild(span);
-     }
-     inputBox.value = '';
-     saveData();
+
+        listContainer.appendChild(li);
+    });
+    saveData();
 }
-inputBox.addEventListener("keydown", function(event){
-    if (event.key === "Enter"){
-        addTask();
+
+function addTask(){
+    const taskText = inputBox.value.trim();
+    if (taskText === ''){
+        alert("You must enter a task before adding");
+        return;
     }
-});
-addButton.addEventListener("click", function(e){
-    console.log(count);
-    inputBox.classList.remove("search-bar");
+    const newTask = {
+        id: generateUniqueID(),
+        itemText: taskText,
+        isComplete: false,
+    }
+    tasks.push(newTask);
+    inputBox.value = '';
+    renderTasks();
+}
+// inputBox.addEventListener("keydown", function(event){
+//     if (event.key === "Enter"){
+//         addTask();
+//     }
+// });
+// addButton.addEventListener("click", function(e){
+//     console.log(count);
+//     inputBox.classList.remove("search-bar");
+// })
+
+function toggleTaskStatus(id){
+    const taskIndex = tasks.findIndex(task => task.id === id);
+    if (taskIndex > -1){
+        tasks[taskIndex].isComplete = !tasks[taskIndex].isComplete;
+        renderTasks();
+    }
+}
+
+
+function deleteTask(id){
+    tasks = tasks.filter(task => task.id !== id);
+    renderTasks(); 
+}
+
+
+inputBox.addEventListener("keydown", function(event){
+   if (event.key === "Enter"){
+      addTask();
+   } 
 })
 
+
+addButton.addEventListener("click", function(){
+    inputBox.classList.remove("search-bar");
+});
+
 listContainer.addEventListener('click', function(e){
-    if(e.target.tagName.toLowerCase() == "li" && e.target.tagName.toLowerCase() != "span"){
-        e.target.classList.toggle("checked");
-        saveData();
+    const clickedElement = e.target;
+    const listItem = clickedElement.closest('li');
+
+    if (!listItem) return;
+
+    const taskID = parseInt(listItem.dataset.id);
+
+    if (clickedElement.tagName === "SPAN"){
+        deleteTask(taskID);
     }
-    else if(e.target.tagName === "SPAN"){
-        e.target.parentElement.remove();
-        saveData();
+    else if(clickedElement.tagName === "LI"){
+        toggleTaskStatus(taskID);
     }
-}, false);
- if(listContainer.childElementCount === 0){
-            addButton.classList.remove("full");
-        }
+}, false)
 function saveData(){
-    localStorage.setItem("data", listContainer.innerHTML);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 function showData(){
-    listContainer.innerHTML = localStorage.getItem("data");
+    const storeData = localStorage.getItem("tasks");
+    if (storeData){
+        tasks = JSON.parse(storeData);
+    }
+    renderTasks();
 }
 showData();
 
-
+if (tasks.length === 0){
+    addButton.classList.remove("full");
+}
+else{
+    addButton.classList.add("full");
+}
 
 
 
