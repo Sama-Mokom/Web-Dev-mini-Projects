@@ -1,7 +1,6 @@
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 const addButton = document.getElementById("add-button");
-let count = listContainer.childElementCount;
 let tasks = [];
 
 function generateUniqueID(){
@@ -35,6 +34,14 @@ function renderTasks(){
     saveData();
 }
 
+function saveEditedTask(id, newText){
+    const taskIndex = tasks.findIndex(task => task.id === id);
+    if (taskIndex > -1){
+        tasks[taskIndex].itemText = newText.trim();
+        renderTasks();
+    }
+}
+
 function addTask(){
     const taskText = inputBox.value.trim();
     if (taskText === ''){
@@ -50,15 +57,6 @@ function addTask(){
     inputBox.value = '';
     renderTasks();
 }
-// inputBox.addEventListener("keydown", function(event){
-//     if (event.key === "Enter"){
-//         addTask();
-//     }
-// });
-// addButton.addEventListener("click", function(e){
-//     console.log(count);
-//     inputBox.classList.remove("search-bar");
-// })
 
 function toggleTaskStatus(id){
     const taskIndex = tasks.findIndex(task => task.id === id);
@@ -94,13 +92,63 @@ listContainer.addEventListener('click', function(e){
 
     const taskID = parseInt(listItem.dataset.id);
 
-    if (clickedElement.tagName === "SPAN"){
+    if (clickedElement.classList.contains('delete-icon')){
         deleteTask(taskID);
     }
-    else if(clickedElement.tagName === "LI"){
+    else if(clickedElement.classList.contains('edit-button')){
+        const originalText = listItem.firstChild.textContent.trim();
+        listItem.innerHTML = '';
+
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.value = originalText;
+        inputField.classList.add('edit-input-field');
+        inputField.maxLength = 255;
+
+        listItem.appendChild(inputField);
+        inputField.focus();
+        inputField.select();
+
+        inputField.addEventListener('keydown', function(event){
+            if (event.key === 'Enter'){
+                saveEditedTask(taskID, inputField.value);
+                listItem.classList.remove('editing-pending');
+            }
+        });
+        inputField.addEventListener('blur', function(){
+          saveEditedTask(taskID, inputField.value);
+          listItem.classList.remove('editing-pending');
+    });
+    }else if(clickedElement.tagName === "LI" && !listItem.classList.contains('editing-pending') && !listItem.classList.contains('editing-active')){
         toggleTaskStatus(taskID);
     }
-}, false)
+}, false);
+
+
+listContainer.addEventListener('dblclick', function(e){
+    const clickedElement = e.target;
+    console.log(clickedElement)
+    const listItem = clickedElement.closest('li');
+
+    if (!listItem || listItem.classList.contains('editing-pending')|| listItem.classList.contains('editing-active')) {
+        return;
+    }
+
+    const taskID = parseInt(listItem.dataset.id);
+
+    const deleteSpan = listItem.querySelector('.delete-icon');
+    if (deleteSpan){
+        deleteSpan.remove();
+    }
+    const editButton = document.createElement('button');
+    editButton.innerHTML = 'Edit';
+    editButton.classList.add('edit-button');
+    listItem.appendChild(editButton);
+
+    listItem.classList.add('editing-pending');
+}, false);
+
+
 function saveData(){
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }

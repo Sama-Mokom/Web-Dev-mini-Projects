@@ -172,6 +172,64 @@ ul#list-container li::before{
     top: 12px;
     left: 8px;
 }
+.todo-app ul li .edit-button{
+    background-color: #aaa830;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+.todo-app ul li .edit-button:hover{
+    background-color: #5f5e03;
+}
+.todo-app ul li .edit-input-field{
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: calc(100%-60px);
+    outline: none;
+    font-size: 17px;
+    background: #f2f2f2;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.todo-app ul li.editing-pending {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 10px 8px 10px 50px;
+    box-sizing: border-box;
+}
+
+.todo-app ul li.editing-pending::before,
+.todo-app ul li .edit-input-field ~ span::before{
+    content: none !important;
+}
+
+/* .todo-app ul li span.delete-icon{
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    color: #555;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.todo-app ul li span.delete-icon:hover{
+    background-color: #edeef0;
+} */
 
 ul li.checked{
     color: #555;
