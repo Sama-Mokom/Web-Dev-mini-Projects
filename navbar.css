@@ -136,6 +136,7 @@ button{
     font-size: 30px;
     cursor: pointer;
     border-radius: 40px;
+    display: block;
 }
 button.full{
     display: none;
@@ -213,7 +214,7 @@ ul#list-container li::before{
     content: none !important;
 }
 
-/* .todo-app ul li span.delete-icon{
+.todo-app ul li span.delete-icon{
     position: absolute;
     right: 0px;
     top: 50%;
@@ -229,7 +230,7 @@ ul#list-container li::before{
 
 .todo-app ul li span.delete-icon:hover{
     background-color: #edeef0;
-} */
+}
 
 ul li.checked{
     color: #555;

@@ -27,6 +27,7 @@ function renderTasks(){
         }
         let span = document.createElement("span");
         span.innerHTML = "\u00d7";
+        span.classList.add('delete-icon')
         li.appendChild(span);
 
         listContainer.appendChild(li);
@@ -82,61 +83,96 @@ inputBox.addEventListener("keydown", function(event){
 
 addButton.addEventListener("click", function(){
     inputBox.classList.remove("search-bar");
+    addButton.classList.add("full");
 });
 
+let clickTimer = null; //variable to store timer for distinguishing single click from double click
 listContainer.addEventListener('click', function(e){
     const clickedElement = e.target;
-    const listItem = clickedElement.closest('li');
+    const listItem = clickedElement.closest('LI');
+    console.log(listItem);
 
     if (!listItem) return;
-
     const taskID = parseInt(listItem.dataset.id);
 
     if (clickedElement.classList.contains('delete-icon')){
-        deleteTask(taskID);
+        if (clickTimer){
+            clearTimeout(clickTimer);
+            clickTimer = null;
+        }
+        clickTimer = setTimeout(() =>{
+            const taskID = parseInt(listItem.dataset.id);
+            deleteTask(taskID);
+            clickTimer = null;
+        }, 250);
+
+
     }
     else if(clickedElement.classList.contains('edit-button')){
-        const originalText = listItem.firstChild.textContent.trim();
-        listItem.innerHTML = '';
+        if (clickTimer){
+            clearTimeout(clickTimer);
+            clickTimer = null;
+        }
+        clickTimer = setTimeout(() =>{
+            const originalText = listItem.firstChild.textContent.trim();
+            listItem.innerHTML = '';
 
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.value = originalText;
-        inputField.classList.add('edit-input-field');
-        inputField.maxLength = 255;
+            const inputField = document.createElement('input');
+                  inputField.type = 'text';
+                  inputField.value = originalText;
+                  inputField.classList.add('edit-input-field');
+                  inputField.maxLength = 255;
 
-        listItem.appendChild(inputField);
-        inputField.focus();
-        inputField.select();
+            listItem.appendChild(inputField);
+            inputField.focus();
+            inputField.select();
 
-        inputField.addEventListener('keydown', function(event){
-            if (event.key === 'Enter'){
+            inputField.addEventListener('keydown', function(event){//Saves the task the user was editing when they press Enter
+             if (event.key === "Enter"){
+                const taskID = parseInt(listItem.dataset.id);
                 saveEditedTask(taskID, inputField.value);
                 listItem.classList.remove('editing-pending');
             }
-        });
-        inputField.addEventListener('blur', function(){
-          saveEditedTask(taskID, inputField.value);
-          listItem.classList.remove('editing-pending');
-    });
-    }else if(clickedElement.tagName === "LI" && !listItem.classList.contains('editing-pending') && !listItem.classList.contains('editing-active')){
-        toggleTaskStatus(taskID);
+          }, false);
+            inputField.addEventListener('blur', function(){ //Saves the task the user was editing if they click away from the task
+            const taskID = parseInt(listItem.dataset.id);
+            saveEditedTask(taskID, inputField.value);
+            listItem.classList.remove('editing-pending');
+          });
+            clickTimer = null;
+        }, 250);
+        
+
+    }
+    else if(clickedElement.tagName === "LI" && !listItem.classList.contains('editing-pending') && !listItem.classList.contains('editing-active')){ //Checks if the user has clicked on a task which is in the edit state, if ot then it checks or unchecks the task
+        if (clickTimer){
+            clearTimeout(clickTimer);
+            clickTimer = null;
+        }
+        clickTimer = setTimeout(() =>{
+            const taskID = parseInt(listItem.dataset.id);
+            toggleTaskStatus(taskID);
+            clickTimer = null;
+        }, 250);
     }
 }, false);
 
 
 listContainer.addEventListener('dblclick', function(e){
+    if (clickTimer){
+        clearTimeout(clickTimer);
+        clickTimer = null;
+    }
     const clickedElement = e.target;
-    console.log(clickedElement)
     const listItem = clickedElement.closest('li');
+    // alert("Double Click Registered");
 
-    if (!listItem || listItem.classList.contains('editing-pending')|| listItem.classList.contains('editing-active')) {
+    if (!listItem || listItem.classList.contains('editing-pending')|| listItem.classList.contains('editing-active')) { //Checks if the user double clicked on a task that was already in the editing state
         return;
     }
-
     const taskID = parseInt(listItem.dataset.id);
-
     const deleteSpan = listItem.querySelector('.delete-icon');
+
     if (deleteSpan){
         deleteSpan.remove();
     }
