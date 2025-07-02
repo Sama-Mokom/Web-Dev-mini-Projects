@@ -127,6 +127,15 @@ input.search-bar{
     display: none;
 }
 
+input.edit-input-field{
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 14px;
+}
+
+
 button{
     border: none;
     outline: none;

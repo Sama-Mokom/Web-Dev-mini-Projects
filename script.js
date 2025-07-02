@@ -197,12 +197,12 @@ function showData(){
 }
 showData();
 
-if (tasks.length === 0){
-    addButton.classList.remove("full");
-}
-else{
-    addButton.classList.add("full");
-}
+// if (tasks.length === 0){
+//     addButton.classList.remove("full");
+// }
+// else{
+//     addButton.classList.add("full");
+// }
 
 
 
