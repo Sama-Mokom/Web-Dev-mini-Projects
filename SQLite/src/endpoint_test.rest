@@ -1,0 +1,50 @@
+### Create a user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "username": "fredman",
+  "email": "fredman@gmail.com",
+  "password": "secret123"
+}
+
+### Create a user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "username": "matike",
+  "email": "matik@yahoo.com",
+  "password": "secret321"
+}
+
+### Create a user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "username": "lemuel",
+  "email": "lemuel@gmail.com",
+  "password": "secret246"
+}
+
+### Create a task
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "task": "Organize Files for meeting",
+  "username":"lemuel" 
+}
+### Get all tasks for a user
+GET http://localhost:3000/tasks?username=lemuel
+
+### Get a user by username
+GET http://localhost:3000/users/lemuel
+
+### Get all users
+GET http://localhost:3000/users
+
+### Delete a user
+DELETE http://localhost:3000/users/lemuel
+
