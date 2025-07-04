@@ -34,10 +34,10 @@ Content-Type: application/json
 
 {
   "task": "Organize Files for meeting",
-  "username":"lemuel" 
+  "username":"sama" 
 }
 ### Get all tasks for a user
-GET http://localhost:3000/tasks?username=lemuel
+GET http://localhost:3000/tasks?username=sama
 
 ### Get a user by username
 GET http://localhost:3000/users/lemuel

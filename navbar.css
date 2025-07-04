@@ -122,45 +122,47 @@ input{
     outline: none;
     background: transparent;
     padding: 14px;
-    font-size: 16px;
+}
+input.search-bar{
+    display: none;
 }
 
 button{
     border: none;
     outline: none;
-    padding: 16px 30px;
+    padding: 16px 50px;
     background: #ff5945;
     color: #fff;
-    font-size: 16px;
+    font-size: 30px;
     cursor: pointer;
     border-radius: 40px;
+    display: block;
+}
+button.full{
+    display: none;
 }
 
-.list {
-    margin-top: 20px;
-    width: 100%;
-}
-
-#list-container {
-    width: 100%;
-    list-style: none;
-    padding: 0;
-}
-
-#list-container li {
-    position: relative;
-    padding: 12px 8px 12px 50px;
-    background: #edeef0;
+ul li{
+    list-style: decimal;
     font-size: 17px;
-    cursor: pointer;
+    padding: 12px 8px 12px 50px;
     user-select: none;
-    margin-bottom: 8px;
-    border-radius: 3px;
-    word-break: break-word;
+    cursor: pointer;
+    position: relative;
+    color: black;
 }
 
-#list-container li::before {
-    content: '';
+.list{
+    display: flex;
+    width: 300px;
+}
+
+.list #list-container {
+    width: 100%;
+}
+
+ul#list-container li::before{
+    content: "";
     position: absolute;
     height: 28px;
     width: 28px;
@@ -168,24 +170,53 @@ button{
     background-image: url("images/unchecked.png");
     background-size: cover;
     background-position: center;
-    top: 50%;
+    top: 12px;
     left: 8px;
-    transform: translateY(-50%);
 }
-
-#list-container li.checked {
-    color: #555;
-    text-decoration: line-through;
-    background: #f9f9f9;
-}
-
-#list-container li.checked::before {
-    background-image: url("images/checked3.png");
-}
-
-#list-container li span {
+.todo-app ul li .edit-button{
+    background-color: #aaa830;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
     position: absolute;
-    right: 0;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+.todo-app ul li .edit-button:hover{
+    background-color: #5f5e03;
+}
+.todo-app ul li .edit-input-field{
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: calc(100%-60px);
+    outline: none;
+    font-size: 17px;
+    background: #f2f2f2;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.todo-app ul li.editing-pending {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 10px 8px 10px 50px;
+    box-sizing: border-box;
+}
+
+.todo-app ul li.editing-pending::before,
+.todo-app ul li .edit-input-field ~ span::before{
+    content: none !important;
+}
+
+.todo-app ul li span.delete-icon{
+    position: absolute;
+    right: 0px;
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
@@ -197,6 +228,35 @@ button{
     border-radius: 50%;
 }
 
-#list-container li span:hover {
+.todo-app ul li span.delete-icon:hover{
+    background-color: #edeef0;
+} 
+
+ul li.checked{
+    color: #555;
+    text-decoration: line-through;
+}
+
+ul#list-container li.checked::before{
+    background-image: url("images/checked3.png");
+}
+
+
+ul li span{
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    color: #555;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+ul li:hover span{
+    display: block;
     background: #edeef0;
 }
